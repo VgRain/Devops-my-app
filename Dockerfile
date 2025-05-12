@@ -1,14 +1,20 @@
-# Use the official PHP image with Apache
+# Use PHP with Apache
 FROM php:8.2-apache
 
-# Copy all your project files to Apache's web root
-COPY . /var/www/html/
+# Install mysqli
+RUN docker-php-ext-install mysqli
 
-# Enable Apache mod_rewrite if you're using .htaccess
+# Optional: Enable mod_rewrite (if you're using .htaccess)
 RUN a2enmod rewrite
 
-# Set permissions (optional but recommended)
+# Optional: Suppress Apache ServerName warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Copy your site files
+COPY . /var/www/html/
+
+# Set correct permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose port 80 for HTTP
+# Expose default Apache port
 EXPOSE 80
