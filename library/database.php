@@ -1,54 +1,46 @@
 <?php
 require_once 'config.php';
 
-$dbConn = mysqli_connect ($dbHost, $dbUser, $dbPass,$dbName);// or die ('MySQL connect failed. ' . mysql_error());
-// mysql_select_db($dbName) or die('Cannot select database. ' . mysql_error());
+// Connect using mysqli
+$dbConn = mysqli_connect($dbHost, $dbUser, $dbPass, $dbName);
 
-function dbQuery($sql)
-{
-	global $dbConn;
-	$result = mysqli_query($dbConn,$sql); //or die(mysql_error());
-	return $result;
+if (!$dbConn) {
+    die('MySQL connection failed: ' . mysqli_connect_error());
 }
 
-function dbAffectedRows()
-{
-	global $dbConn;
-	return mysql_affected_rows($dbConn);
+// Wrapper functions
+function dbQuery($sql) {
+    global $dbConn;
+    return mysqli_query($dbConn, $sql);
 }
 
-function dbFetchArray($result, $resultType = MYSQL_NUM) {
-	return mysql_fetch_array($result, $resultType);
+function dbAffectedRows() {
+    global $dbConn;
+    return mysqli_affected_rows($dbConn);
 }
 
-function dbFetchAssoc($result)
-{
-	return mysqli_fetch_assoc($result);
+function dbFetchArray($result, $resultType = MYSQLI_NUM) {
+    return mysqli_fetch_array($result, $resultType);
 }
 
-function dbFetchRow($result) 
-{
-	return mysqli_fetch_row($result);
+function dbFetchAssoc($result) {
+    return mysqli_fetch_assoc($result);
 }
 
-function dbFreeResult($result)
-{
-	return mysqli_free_result($result);
+function dbFetchRow($result) {
+    return mysqli_fetch_row($result);
 }
 
-function dbNumRows($result)
-{
-	return mysqli_num_rows($result);
-	
+function dbFreeResult($result) {
+    return mysqli_free_result($result);
 }
 
-function dbSelect($dbName)
-{
-	return mysqli_select_db($dbName);
+function dbNumRows($result) {
+    return mysqli_num_rows($result);
 }
 
-function dbInsertId()
-{
-	return mysqli_insert_id();
+function dbInsertId() {
+    global $dbConn;
+    return mysqli_insert_id($dbConn);
 }
 ?>
